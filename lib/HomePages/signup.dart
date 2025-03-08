@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_assistant_app/theme/snack_bar.dart';
 import 'package:health_assistant_app/theme/theme.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -18,7 +19,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,11 +38,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    'assets/uploads/logo.png',
-                    width: 80,
-                    height: 80,
-                  ),
+                  Image.asset('assets/uploads/logo.png', width: 80, height: 80),
                   SizedBox(width: 10),
                   Text(
                     'WellnessBridge',
@@ -137,19 +134,23 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 child: DropdownButton<String>(
                   value: _selectedGender,
-                  items: <String>['Male', 'Female', 'Other']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Row(
-                        children: [
-                          Icon(Icons.person, color: Colors.grey),
-                          SizedBox(width: 10),
-                          Text(value, style: AppTheme.bodyTextStyle),
-                        ],
-                      ),
-                    );
-                  }).toList(),
+                  items:
+                      <String>[
+                        'Male',
+                        'Female',
+                        'Other',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Row(
+                            children: [
+                              Icon(Icons.person, color: Colors.grey),
+                              SizedBox(width: 10),
+                              Text(value, style: AppTheme.bodyTextStyle),
+                            ],
+                          ),
+                        );
+                      }).toList(),
                   onChanged: (String? newValue) {
                     setState(() {
                       _selectedGender = newValue;
@@ -177,19 +178,23 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 child: DropdownButton<String>(
                   value: _selectedRole,
-                  items: <String>['Umunyabuzima', 'Parent', 'Admin']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Row(
-                        children: [
-                          Icon(Icons.person, color: Colors.grey),
-                          SizedBox(width: 10),
-                          Text(value, style: AppTheme.bodyTextStyle),
-                        ],
-                      ),
-                    );
-                  }).toList(),
+                  items:
+                      <String>[
+                        'Umunyabuzima',
+                        'Parent',
+                        'Admin',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Row(
+                            children: [
+                              Icon(Icons.person, color: Colors.grey),
+                              SizedBox(width: 10),
+                              Text(value, style: AppTheme.bodyTextStyle),
+                            ],
+                          ),
+                        );
+                      }).toList(),
                   onChanged: (String? newValue) {
                     setState(() {
                       _selectedRole = newValue;
@@ -220,7 +225,10 @@ class _SignUpPageState extends State<SignUpPage> {
                       });
                     },
                   ),
-                  Text("I agree to the terms and conditions", style: AppTheme.bodyTextStyle),
+                  Text(
+                    "I agree to the terms and conditions",
+                    style: AppTheme.bodyTextStyle,
+                  ),
                 ],
               ),
 
@@ -228,7 +236,8 @@ class _SignUpPageState extends State<SignUpPage> {
               TextButton(
                 onPressed: () {
                   // Handle sign up action here
-                  if (_agreeToTerms && _firstNameController.text.isNotEmpty &&
+                  if (_agreeToTerms &&
+                      _firstNameController.text.isNotEmpty &&
                       _lastNameController.text.isNotEmpty &&
                       _emailController.text.isNotEmpty &&
                       _phoneController.text.isNotEmpty &&
@@ -236,10 +245,30 @@ class _SignUpPageState extends State<SignUpPage> {
                       _passwordController.text.isNotEmpty &&
                       _selectedGender != null &&
                       _selectedRole != null) {
-                    print("Sign Up successful!");
-                    // Implement actual sign-up logic here
+                    showCustomSnackBar(
+                      context,
+                      "Signup successfully done",
+                      true,
+                    );
+
+                    // Clear the form fields
+                    _firstNameController.clear();
+                    _lastNameController.clear();
+                    _emailController.clear();
+                    _phoneController.clear();
+                    _addressController.clear();
+                    _passwordController.clear();
+                    setState(() {
+                      _selectedGender = null;
+                      _selectedRole = null;
+                      _agreeToTerms = false;
+                    });
                   } else {
-                    print("Please fill all fields and agree to terms.");
+                    showCustomSnackBar(
+                      context,
+                      "Signup Failed! Please Fill all fields",
+                      false,
+                    );
                   }
                 },
                 style: TextButton.styleFrom(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:health_assistant_app/HomePages/forgetpassword.dart';
 import 'package:health_assistant_app/HomePages/signup.dart';
+import 'package:health_assistant_app/theme/snack_bar.dart';
 import 'package:health_assistant_app/theme/theme.dart';
 
 class LoginPage extends StatefulWidget {
@@ -67,15 +68,16 @@ class _LoginPageState extends State<LoginPage> {
                     'WellnessBridge',
                     style: AppTheme.titleTextStyle.copyWith(fontSize: 32),
                   ),
+
+                  SizedBox(height: 30),
                 ],
               ),
               SizedBox(height: 20), // Space between the row and the next widget
+
               Text(
                 'Login to WellnessBridge',
                 style: AppTheme.subtitleTextStyle.copyWith(fontSize: 18),
               ),
-              SizedBox(height: 30),
-
               // Email TextField
               TextField(
                 decoration: InputDecoration(
@@ -168,11 +170,9 @@ class _LoginPageState extends State<LoginPage> {
               TextButton(
                 onPressed: () {
                   if (_selectedRole != null) {
-                    print(
-                      "Selected Role: $_selectedRole",
-                    ); // Print the selected role
+                    showCustomSnackBar(context, "Login Successful!", true);
                   } else {
-                    print("Please select a role"); // Prompt to select a role
+                    showCustomSnackBar(context, "Login Failed! Please select a role.", false);
                   }
                 },
                 style: TextButton.styleFrom(
