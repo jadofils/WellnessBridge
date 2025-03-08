@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:health_assistant_app/HomePages/forgetpassword.dart';
+import 'package:health_assistant_app/HomePages/signup.dart';
 import 'package:health_assistant_app/theme/theme.dart';
+
 
 class LoginPage extends StatefulWidget {
   @override
@@ -162,8 +165,12 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
-                    onPressed: () {
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => ForgetPasswordPage()));
+                   onPressed: () {
+                      // Navigate to Sign Up Screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ForgetPasswordPage()), // Replace with your SignUpPage widget
+                      );
                     },
                     child: Text(
                       'Forget Password?',
@@ -185,7 +192,10 @@ class _LoginPageState extends State<LoginPage> {
                   TextButton(
                     onPressed: () {
                       // Navigate to Sign Up Screen
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignUpPage()), // Replace with your SignUpPage widget
+                      );
                     },
                     child: Text(
                       'Sign Up',
