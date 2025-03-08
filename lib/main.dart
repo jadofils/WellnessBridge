@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:health_assistant_app/HomePages/login.dart';
 
 void main() {
-  runApp(LandingPage());
+  runApp(MyApp());
 }
 
-class LandingPage extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

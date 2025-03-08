@@ -3,7 +3,6 @@ import 'package:health_assistant_app/HomePages/forgetpassword.dart';
 import 'package:health_assistant_app/HomePages/signup.dart';
 import 'package:health_assistant_app/theme/theme.dart';
 
-
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -17,10 +16,37 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('WellnessBridge'),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(
+                50,
+              ), // Makes the image circular
+              child: Image.asset(
+                'assets/uploads/logo.png', // Replace with the correct path
+                height: 40, // Adjust as needed
+                width: 40, // Adjust as needed
+                fit:
+                    BoxFit
+                        .cover, // Ensures the image fits inside the circular shape
+              ),
+            ),
+            SizedBox(width: 10), // Space between logo and title
+            Text(
+              'WellnessBridge', // Project title
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white, // Ensure visibility
+              ),
+            ),
+          ],
+        ),
         centerTitle: true,
-        backgroundColor: AppTheme.primaryColor,
+        backgroundColor: AppTheme.primaryColor, // Keep your theme color
       ),
+
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -49,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                 style: AppTheme.subtitleTextStyle.copyWith(fontSize: 18),
               ),
               SizedBox(height: 30),
-              
+
               // Email TextField
               TextField(
                 decoration: InputDecoration(
@@ -81,19 +107,28 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 child: DropdownButton<String>(
                   value: _selectedRole, // Current selected value
-                  items: <String>['Umunyabuzima', 'Parent', 'Admin']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Row(
-                        children: [
-                          Icon(Icons.person, color: Colors.grey), // Person icon
-                          SizedBox(width: 10), // Space between icon and text
-                          Text(value, style: AppTheme.bodyTextStyle),
-                        ],
-                      ),
-                    );
-                  }).toList(),
+                  items:
+                      <String>[
+                        'Umunyabuzima',
+                        'Parent',
+                        'Admin',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.person,
+                                color: Colors.grey,
+                              ), // Person icon
+                              SizedBox(
+                                width: 10,
+                              ), // Space between icon and text
+                              Text(value, style: AppTheme.bodyTextStyle),
+                            ],
+                          ),
+                        );
+                      }).toList(),
                   onChanged: (String? newValue) {
                     setState(() {
                       _selectedRole = newValue; // Update the selected role
@@ -104,14 +139,12 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       Icon(Icons.person, color: Colors.grey), // Hint icon
                       SizedBox(width: 10), // Space between icon and text
-                      Text(
-                        'Select Role',
-                        style: AppTheme.bodyTextStyle,
-                      ),
+                      Text('Select Role', style: AppTheme.bodyTextStyle),
                     ],
                   ),
                   icon: Icon(Icons.arrow_drop_down), // Dropdown icon
-                  underline: SizedBox(), // Remove the default underline (optional)
+                  underline:
+                      SizedBox(), // Remove the default underline (optional)
                 ),
               ),
               SizedBox(height: 30),
@@ -165,11 +198,13 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
-                   onPressed: () {
+                    onPressed: () {
                       // Navigate to Sign Up Screen
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ForgetPasswordPage()), // Replace with your SignUpPage widget
+                        MaterialPageRoute(
+                          builder: (context) => ForgetPasswordPage(),
+                        ), // Replace with your SignUpPage widget
                       );
                     },
                     child: Text(
@@ -194,7 +229,9 @@ class _LoginPageState extends State<LoginPage> {
                       // Navigate to Sign Up Screen
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => SignUpPage()), // Replace with your SignUpPage widget
+                        MaterialPageRoute(
+                          builder: (context) => SignUpPage(),
+                        ), // Replace with your SignUpPage widget
                       );
                     },
                     child: Text(
