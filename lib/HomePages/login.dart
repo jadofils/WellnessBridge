@@ -3,6 +3,9 @@ import 'package:health_assistant_app/HomePages/forgetpassword.dart';
 import 'package:health_assistant_app/HomePages/signup.dart';
 import 'package:health_assistant_app/theme/snack_bar.dart';
 import 'package:health_assistant_app/theme/theme.dart';
+import 'package:health_assistant_app/HomePages/AdminDashboard.dart';
+import 'package:health_assistant_app/HomePages/ParentDashboard.dart';
+import 'package:health_assistant_app/HomePages/UmunyabuzimaDashboard.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -43,6 +46,24 @@ class _LoginPageState extends State<LoginPage> {
         showCustomSnackBar(context, "Login Failed! Please select a role.", false);
       } else {
         showCustomSnackBar(context, "Login Successful!", true);
+
+        // Navigate based on user role
+        Widget dashboard;
+        if (_selectedRole == 'Admin') {
+          dashboard = AdminDashboard();
+        } else if (_selectedRole == 'Parent') {
+          dashboard = ParentDashboard();
+        } else if (_selectedRole == 'Umunyabuzima') {
+          dashboard = UmunyabuzimaDashboard();
+        } else {
+          return;
+        }
+
+        // Redirect to the selected dashboard
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => dashboard),
+        );
       }
     }
   }
