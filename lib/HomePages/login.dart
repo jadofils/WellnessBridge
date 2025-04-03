@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:health_assistant_app/HomePages/forgetpassword.dart';
 import 'package:health_assistant_app/HomePages/signup.dart';
+import 'package:health_assistant_app/healthcare/healthCareDashboard.dart';
 import 'package:health_assistant_app/theme/snack_bar.dart';
 import 'package:health_assistant_app/theme/theme.dart';
 
@@ -43,6 +44,14 @@ class _LoginPageState extends State<LoginPage> {
         showCustomSnackBar(context, "Login Failed! Please select a role.", false);
       } else {
         showCustomSnackBar(context, "Login Successful!", true);
+        
+        // Redirect to HealthCareDashboard after a short delay
+        Future.delayed(const Duration(milliseconds: 1500), () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HealthCareDashboard()),
+          );
+        });
       }
     }
   }
@@ -50,13 +59,13 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Background color
+      backgroundColor: Colors.white,
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // App Logo & Title (Separate from Form)
+              // App Logo & Title
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -92,7 +101,8 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Login to WellnessBridge', style: AppTheme.subtitleTextStyle.copyWith(fontSize: 18)),
+                      Text('Login to WellnessBridge', 
+                          style: AppTheme.subtitleTextStyle.copyWith(fontSize: 18)),
                       SizedBox(height: 20),
 
                       // Email Input
