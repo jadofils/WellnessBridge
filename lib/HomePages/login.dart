@@ -10,8 +10,42 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
   String? _selectedRole;
   bool _rememberMe = false;
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your email';
+    }
+    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+    if (!emailRegex.hasMatch(value)) {
+      return 'Enter a valid email address';
+    }
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your password';
+    }
+    if (value.length < 6) {
+      return 'Password must be at least 6 characters long';
+    }
+    return null;
+  }
+
+  void _login() {
+    if (_formKey.currentState!.validate()) {
+      if (_selectedRole == null) {
+        showCustomSnackBar(context, "Login Failed! Please select a role.", false);
+      } else {
+        showCustomSnackBar(context, "Login Successful!", true);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,172 +74,174 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 width: MediaQuery.of(context).size.width > 600 ? 400 : double.infinity,
                 padding: EdgeInsets.all(20),
-                margin: EdgeInsets.symmetric(horizontal: 16), // Ensure padding on all sides
+                margin: EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(15), // Rounded corners
+                  borderRadius: BorderRadius.circular(15),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black12,
                       blurRadius: 8,
                       spreadRadius: 2,
-                      offset: Offset(0, 4), // Adds slight elevation
+                      offset: Offset(0, 4),
                     ),
                   ],
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Login to WellnessBridge', style: AppTheme.subtitleTextStyle.copyWith(fontSize: 18)),
-                    SizedBox(height: 20),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Login to WellnessBridge', style: AppTheme.subtitleTextStyle.copyWith(fontSize: 18)),
+                      SizedBox(height: 20),
 
-                    // Email Input
-                    TextField(
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.email, color: Colors.grey),
-                        labelText: 'Enter your email address',
-                        labelStyle: AppTheme.bodyTextStyle,
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-
-                    // Password Input
-                    TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.lock, color: Colors.grey),
-                        labelText: 'Enter your password',
-                        labelStyle: AppTheme.bodyTextStyle,
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-
-                    // Role Dropdown
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: DropdownButton<String>(
-                        value: _selectedRole,
-                        isExpanded: true,
-                        items: ['Umunyabuzima', 'Parent', 'Admin']
-                            .map((role) => DropdownMenuItem(
-                                  value: role,
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.person, color: Colors.grey),
-                                      SizedBox(width: 10),
-                                      Text(role, style: AppTheme.bodyTextStyle),
-                                    ],
-                                  ),
-                                ))
-                            .toList(),
-                        onChanged: (newValue) {
-                          setState(() {
-                            _selectedRole = newValue;
-                          });
-                        },
-                        hint: Row(
-                          children: [
-                            Icon(Icons.person, color: Colors.grey),
-                            SizedBox(width: 10),
-                            Text('Select Role', style: AppTheme.bodyTextStyle),
-                          ],
+                      // Email Input
+                      TextFormField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          icon: Icon(Icons.email, color: Colors.grey),
+                          labelText: 'Enter your email address',
+                          labelStyle: AppTheme.bodyTextStyle,
+                          border: OutlineInputBorder(),
                         ),
-                        underline: SizedBox(),
-                        icon: Icon(Icons.arrow_drop_down),
+                        validator: _validateEmail,
                       ),
-                    ),
-                    SizedBox(height: 30),
+                      SizedBox(height: 20),
 
-                    // Remember Me Checkbox
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: _rememberMe,
-                          onChanged: (value) {
+                      // Password Input
+                      TextFormField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          icon: Icon(Icons.lock, color: Colors.grey),
+                          labelText: 'Enter your password',
+                          labelStyle: AppTheme.bodyTextStyle,
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: _validatePassword,
+                      ),
+                      SizedBox(height: 20),
+
+                      // Role Dropdown
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: DropdownButton<String>(
+                          value: _selectedRole,
+                          isExpanded: true,
+                          items: ['Umunyabuzima', 'Parent', 'Admin']
+                              .map((role) => DropdownMenuItem(
+                                    value: role,
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.person, color: Colors.grey),
+                                        SizedBox(width: 10),
+                                        Text(role, style: AppTheme.bodyTextStyle),
+                                      ],
+                                    ),
+                                  ))
+                              .toList(),
+                          onChanged: (newValue) {
                             setState(() {
-                              _rememberMe = value ?? false;
+                              _selectedRole = newValue;
                             });
                           },
-                        ),
-                        Text("Remember Me", style: AppTheme.bodyTextStyle),
-                      ],
-                    ),
-
-                    // Login Button
-                    TextButton(
-                      onPressed: () {
-                        if (_selectedRole != null) {
-                          showCustomSnackBar(context, "Login Successful!", true);
-                        } else {
-                          showCustomSnackBar(context, "Login Failed! Please select a role.", false);
-                        }
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: AppTheme.buttonColor,
-                               minimumSize: Size(600, 48),  // Setting the width to 600px and height to 48px
-                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                      ),
-                      child: Text(
-                        "Login",
-                        style: AppTheme.bodyTextStyle.copyWith(
-                          color: AppTheme.buttonTextColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-
-                    // Forgot Password
-                    Center(
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ForgetPasswordPage()),
-                          );
-                        },
-                        child: Text(
-                          'Forgot Password?',
-                          style: AppTheme.bodyTextStyle.copyWith(
-                            color: Colors.blue,
-                            decoration: TextDecoration.underline,
+                          hint: Row(
+                            children: [
+                              Icon(Icons.person, color: Colors.grey),
+                              SizedBox(width: 10),
+                              Text('Select Role', style: AppTheme.bodyTextStyle),
+                            ],
                           ),
+                          underline: SizedBox(),
+                          icon: Icon(Icons.arrow_drop_down),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 20),
+                      SizedBox(height: 30),
 
-                    // Sign Up Link
-                    Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      // Remember Me Checkbox
+                      Row(
                         children: [
-                          Text("Don't have an account?", style: AppTheme.bodyTextStyle),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => SignUpPage()),
-                              );
+                          Checkbox(
+                            value: _rememberMe,
+                            onChanged: (value) {
+                              setState(() {
+                                _rememberMe = value ?? false;
+                              });
                             },
-                            child: Text(
-                              'Sign Up',
-                              style: AppTheme.bodyTextStyle.copyWith(
-                                color: Colors.blue,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
                           ),
+                          Text("Remember Me", style: AppTheme.bodyTextStyle),
                         ],
                       ),
-                    ),
-                  ],
+
+                      // Login Button
+                      TextButton(
+                        onPressed: _login,
+                        style: TextButton.styleFrom(
+                          backgroundColor: AppTheme.buttonColor,
+                          minimumSize: Size(600, 48),
+                          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                        ),
+                        child: Text(
+                          "Login",
+                          style: AppTheme.bodyTextStyle.copyWith(
+                            color: AppTheme.buttonTextColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+
+                      // Forgot Password
+                      Center(
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ForgetPasswordPage()),
+                            );
+                          },
+                          child: Text(
+                            'Forgot Password?',
+                            style: AppTheme.bodyTextStyle.copyWith(
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+
+                      // Sign Up Link
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Don't have an account?", style: AppTheme.bodyTextStyle),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => SignUpPage()),
+                                );
+                              },
+                              child: Text(
+                                'Sign Up',
+                                style: AppTheme.bodyTextStyle.copyWith(
+                                  color: Colors.blue,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
