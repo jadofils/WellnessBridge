@@ -195,7 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                           backgroundColor: AppTheme.buttonColor,
                           minimumSize: Size(600, 48),
                           padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                        ),
+                         ),
                         child: Text(
                           "Login",
                           style: AppTheme.bodyTextStyle.copyWith(

@@ -54,6 +54,7 @@ class _HealthCareDashboardState extends State<HealthCareDashboard> {
 
   @override
   Widget build(BuildContext context) {
+    //print(mediaquery.of(context.size.height));
     return MaterialApp(
       theme: _isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme,
       home: Scaffold(
