@@ -24,7 +24,7 @@ class WellnessBridgeApp extends StatelessWidget {
       initialRoute: '/signup', // Changed to '/signup'
       routes: {
          
-        '/signup': (context) => SignUpPage(), // Removed const
+        '/': (context) => SignUpPage(), // Removed const
         '/login': (context) => LoginPage(),// Removed const
         '/forgot-password': (context) => ForgetPasswordPage(), // Removed const
         '/healthcare-dashboard': (context) => HealthCareDashboard(), // Removed const
