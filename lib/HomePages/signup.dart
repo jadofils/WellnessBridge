@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:health_assistant_app/HomePages/login.dart';
 import 'package:health_assistant_app/theme/snack_bar.dart';
 import 'package:health_assistant_app/theme/theme.dart';
+import 'package:health_assistant_app/utils/validation_utils.dart';
 
 class SignUpPage extends StatefulWidget {
   @override

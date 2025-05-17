@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:health_assistant_app/theme/theme.dart'; // Adjust the import path as needed
 
 class ForgetPasswordPage extends StatefulWidget {
+  const ForgetPasswordPage({super.key});
+
   @override
   _ForgetPasswordPageState createState() => _ForgetPasswordPageState();
 }
@@ -106,7 +108,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                       }
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: AppTheme.buttonColor,
+                      backgroundColor: AppTheme.rustOrange,
                       minimumSize: Size(double.infinity, 48), // Full width and fixed height
                       padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                     ),

@@ -3,6 +3,7 @@ import 'package:health_assistant_app/HomePages/login.dart';
 import 'package:health_assistant_app/HomePages/signup.dart';
 import 'package:health_assistant_app/HomePages/forgetpassword.dart';
 import 'package:health_assistant_app/healthcare/healthCareDashboard.dart';
+import 'package:health_assistant_app/utils/validation_utils.dart';
 
 
 void main() {

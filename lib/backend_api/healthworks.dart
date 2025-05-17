@@ -1,136 +1,41 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:health_assistant_app/backend_api/healthworks.dart';
+import 'package:health_assistant_app/backend_api/health_worker_detail_screen.dart'
+    show HealthWorkerDetailScreen;
+import 'package:http/http.dart' as http;
 import 'package:health_assistant_app/theme/theme.dart';
+import 'package:health_assistant_app/theme/snack_bar.dart';
 
-class HealthCareDashboard extends StatefulWidget {
-  const HealthCareDashboard({super.key});
+class HealthWorkerService {
+  static const String baseUrl = 'http://127.0.0.1:8000/api/v1/healthworkers';
 
-  @override
-  _HealthCareDashboardState createState() => _HealthCareDashboardState();
-}
+  Future<List<dynamic>> fetchAllHealthWorkers() async {
+    try {
+      final response = await http.get(Uri.parse(baseUrl));
 
-class _HealthCareDashboardState extends State<HealthCareDashboard> {
-  bool _isDarkMode = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: _isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme,
-      home: Scaffold(
-        backgroundColor:
-            _isDarkMode
-                ? AppTheme.nightBackgroundColor
-                : AppTheme.sunBackgroundColor,
-        appBar: AppBar(
-          title: Text(
-            "Health Workers Dashboard",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-          centerTitle: true,
-          backgroundColor: AppTheme.rustOrange,
-          actions: [
-            IconButton(
-              icon: Icon(_isDarkMode ? Icons.wb_sunny : Icons.nightlight_round),
-              onPressed: () {
-                setState(() {
-                  _isDarkMode = !_isDarkMode;
-                });
-              },
-            ),
-          ],
-        ),
-        drawer: _buildAppDrawer(),
-        // Use our new HealthWorkersTable widget here
-        body: HealthWorkersTable(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // Add navigation to create new health worker screen
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Add new health worker'),
-                backgroundColor: AppTheme.amber,
-              ),
-            );
-          },
-          child: Icon(Icons.add),
-          backgroundColor: AppTheme.rustOrange,
-        ),
-      ),
-    );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = jsonDecode(response.body);
+        // Assuming the API returns data in a 'data' field that contains a list
+        return responseData['data'] as List<dynamic>;
+      } else {
+        throw Exception(
+          'Failed to load health workers: ${response.statusCode}',
+        );
+      }
+    } catch (e) {
+      throw Exception('Error fetching health workers: $e');
+    }
   }
 
-  Widget _buildAppDrawer() {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            decoration: BoxDecoration(color: AppTheme.rustOrange),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(Icons.account_circle, size: 60, color: Colors.white),
-                SizedBox(height: 10),
-                Text(
-                  "Health Worker Account",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
-              ],
-            ),
-          ),
-          ListTile(
-            leading: Icon(Icons.people, color: AppTheme.sage),
-            title: Text(
-              "Health Workers",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: AppTheme.rustOrange,
-              ),
-            ),
-            onTap: () {
-              Navigator.pop(context); // Close the drawer
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.medical_services, color: AppTheme.sage),
-            title: Text("Patient Records"),
-            onTap: () {
-              Navigator.pop(context);
-              // Navigate to patient records screen
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.access_time, color: AppTheme.sage),
-            title: Text("Appointments"),
-            onTap: () {
-              Navigator.pop(context);
-              // Navigate to appointments screen
-            },
-          ),
-          Divider(color: AppTheme.mintGreen),
-          ListTile(
-            leading: Icon(Icons.settings, color: AppTheme.sage),
-            title: Text("Settings"),
-            onTap: () {
-              Navigator.pop(context);
-              // Navigate to settings screen
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.logout, color: AppTheme.sage),
-            title: Text("Logout"),
-            onTap: () {
-              Navigator.pop(context);
-              // Handle logout
-            },
-          ),
-        ],
-      ),
-    );
+  // Method to delete a health worker (to be implemented)
+  Future<bool> deleteHealthWorker(String workerId) async {
+    try {
+      final response = await http.delete(Uri.parse('$baseUrl/$workerId'));
+
+      return response.statusCode == 200;
+    } catch (e) {
+      throw Exception('Error deleting health worker: $e');
+    }
   }
 }
 
@@ -212,28 +117,13 @@ class _HealthWorkersTableState extends State<HealthWorkersTable> {
       try {
         final success = await _service.deleteHealthWorker(workerId);
         if (success) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Health worker deleted successfully'),
-              backgroundColor: AppTheme.amber,
-            ),
-          );
+          context.showSuccessSnackBar('Health worker deleted successfully');
           _refreshHealthWorkers();
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Failed to delete health worker'),
-              backgroundColor: AppTheme.rustOrange,
-            ),
-          );
+          context.showErrorSnackBar('Failed to delete health worker');
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: ${e.toString()}'),
-            backgroundColor: AppTheme.rustOrange,
-          ),
-        );
+        context.showErrorSnackBar('Error: ${e.toString()}');
       } finally {
         setState(() => _isLoading = false);
       }
@@ -306,9 +196,24 @@ class _HealthWorkersTableState extends State<HealthWorkersTable> {
           child: ListView.builder(
             physics: AlwaysScrollableScrollPhysics(),
             padding: EdgeInsets.all(16),
-            itemCount: healthWorkers.length,
+            itemCount: healthWorkers.length + 1, // +1 for the header
             itemBuilder: (context, index) {
-              final worker = healthWorkers[index];
+              if (index == 0) {
+                // Header
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Text(
+                    'Health Workers',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.rustOrange,
+                    ),
+                  ),
+                );
+              }
+
+              final worker = healthWorkers[index - 1];
 
               return Card(
                 margin: EdgeInsets.only(bottom: 16),
@@ -337,16 +242,6 @@ class _HealthWorkersTableState extends State<HealthWorkersTable> {
                           ),
                           Row(
                             children: [
-                              IconButton(
-                                icon: Icon(
-                                  Icons.visibility,
-                                  color: AppTheme.amber,
-                                  size: 20,
-                                ),
-                                onPressed: () {
-                                  _showWorkerDetails(context, worker);
-                                },
-                              ),
                               IconButton(
                                 icon: Icon(
                                   Icons.edit,
@@ -433,99 +328,37 @@ class _HealthWorkersTableState extends State<HealthWorkersTable> {
     );
   }
 
-  // Show worker details dialog
-  void _showWorkerDetails(BuildContext context, Map<String, dynamic> worker) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Text(
-                        "Health Worker Details",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.rustOrange,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    _buildDetailRow('ID', worker['hwID'].toString()),
-                    _buildDetailRow('Name', worker['name']),
-                    _buildDetailRow('Gender', worker['gender']),
-                    _buildDetailRow('Date of Birth', worker['dob']),
-                    _buildDetailRow('Role', worker['role']),
-                    _buildDetailRow('Phone', worker['telephone']),
-                    _buildDetailRow('Email', worker['email']),
-                    _buildDetailRow('Address', worker['address']),
-                    SizedBox(height: 16),
-                    Center(
-                      child: ElevatedButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text('Close'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppTheme.rustOrange,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-    );
-  }
-
-  Widget _buildDetailRow(String label, String value) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 100,
-            child: Text(
-              "$label:",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: AppTheme.sage,
-                fontSize: 16,
-              ),
-            ),
-          ),
-          Expanded(child: Text(value, style: TextStyle(fontSize: 16))),
-        ],
+  // Navigation methods for view and edit actions
+  void _navigateToViewScreen(
+    BuildContext context,
+    Map<String, dynamic> worker,
+  ) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (context) => HealthWorkerDetailScreen(workerId: worker['hwID']),
       ),
     );
   }
 
-  // Navigation methods (to be implemented with actual screens later)
   void _navigateToEditScreen(
     BuildContext context,
     Map<String, dynamic> worker,
   ) {
-    // This will be replaced with actual navigation later
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Editing ${worker['name']}'),
-        backgroundColor: AppTheme.amber,
-      ),
+    // TODO: Replace with actual edit screen navigation
+    context.showSuccessSnackBar(
+      'Edit functionality coming soon for ${worker['name']}',
     );
 
-    // Uncomment when you have the actual screen
+    // Uncomment when edit screen is ready:
     // Navigator.push(
     //   context,
-    //   MaterialPageRoute(builder: (context) => EditWorkerScreen(worker: worker)),
+    //   MaterialPageRoute(
+    //     builder: (context) => EditWorkerScreen(
+    //       workerId: worker['hwID'].toString(),
+    //     ),
+    //   ),
     // );
   }
 }
