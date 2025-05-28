@@ -1,4 +1,4 @@
-# health_assistant_app
+# wellnessbridge
 
 A new Flutter project.
 

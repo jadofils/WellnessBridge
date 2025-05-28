@@ -1,79 +1,113 @@
 import 'package:flutter/material.dart';
-import 'package:health_assistant_app/theme/theme.dart';
+import 'package:wellnessbridge/theme/theme.dart';
 
-void showCustomSnackBar(BuildContext context, String message, bool isSuccess) {
-  // Get the screen width
-  double screenWidth = MediaQuery.of(context).size.width;
+class CustomSnackBar {
+  static void show(
+    BuildContext context,
+    String message, {
+    bool isSuccess = true,
+    Duration duration = const Duration(seconds: 3),
+  }) {
+    final overlay = Overlay.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-  // Set the max width for the SnackBar to be 600px
-  double snackBarWidth = screenWidth > 600 ? 600 : screenWidth * 0.9;
-
-  // Use your brand colors from AppTheme
-  final backgroundColor = isSuccess 
-      ? AppTheme.amber         // Success color (amber)
-      : AppTheme.rustOrange;   // Error color (rust orange)
-  
-  final textColor = isSuccess 
-      ? AppTheme.sage          // Text color for success (sage)
-      : Colors.white;          // Text color for error (white for better contrast)
-
-  final snackBar = SnackBar(
-    content: SizedBox(
-      width: snackBarWidth,
-      height: 35,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Text(
-              message,
-              style: TextStyle(
-                color: textColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
+    // Create overlay entry for top-right positioning
+    late OverlayEntry overlayEntry;
+    overlayEntry = OverlayEntry(
+      builder:
+          (context) => Positioned(
+            top: MediaQuery.of(context).padding.top + 16,
+            right: 16,
+            left:
+                MediaQuery.of(context).size.width > 600
+                    ? MediaQuery.of(context).size.width - 400
+                    : 16,
+            child: Material(
+              color: Colors.transparent,
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 300),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                    color:
+                        isSuccess
+                            ? (isDark
+                                ? AppTheme.nightPrimaryColor
+                                : Colors.green)
+                            : Colors.red,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 8,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        isSuccess ? Icons.check_circle : Icons.error,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          message,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                      GestureDetector(
+                        onTap: () => overlayEntry.remove(),
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.white.withOpacity(0.8),
+                          size: 18,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
             ),
           ),
-          IconButton(
-            icon: Icon(Icons.close, color: textColor, size: 18),
-            padding: EdgeInsets.zero,
-            constraints: BoxConstraints(),
-            onPressed: () {
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            },
-          ),
-        ],
-      ),
-    ),
-    backgroundColor: backgroundColor,
-    behavior: SnackBarBehavior.floating,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-    duration: Duration(seconds: 3),
-    // Position at top-right corner
-    margin: EdgeInsets.only(
-      top: 16, 
-      right: 16,
-      // For smaller screens, adjust left margin to maintain the right alignment
-      left: screenWidth - snackBarWidth - 16 > 0 ? screenWidth - snackBarWidth - 16 : 16,
-      bottom: MediaQuery.of(context).size.height - 100, // Push to top
-    ),
-  );
+    );
 
-  // Show the snack bar at the top
-  ScaffoldMessenger.of(context)
-    ..hideCurrentSnackBar()
-    ..showSnackBar(snackBar);
+    overlay.insert(overlayEntry);
+
+    // Auto-remove after duration
+    Future.delayed(duration, () {
+      if (overlayEntry.mounted) {
+        overlayEntry.remove();
+      }
+    });
+  }
+
+  static void showSuccess(BuildContext context, String message) {
+    show(context, message, isSuccess: true);
+  }
+
+  static void showError(BuildContext context, String message) {
+    show(context, message, isSuccess: false);
+  }
 }
 
 // Extension method to make it easier to show snack bars
 extension SnackBarExtension on BuildContext {
   void showSuccessSnackBar(String message) {
-    showCustomSnackBar(this, message, true);
+    CustomSnackBar.showSuccess(this, message);
   }
-  
+
   void showErrorSnackBar(String message) {
-    showCustomSnackBar(this, message, false);
+    CustomSnackBar.showError(this, message);
   }
 }

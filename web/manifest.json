@@ -1,6 +1,6 @@
 {
-    "name": "health_assistant_app",
-    "short_name": "health_assistant_app",
+    "name": "wellnessbridge",
+    "short_name": "wellnessbridge",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

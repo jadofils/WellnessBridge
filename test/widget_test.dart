@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:health_assistant_app/main.dart';
+import 'package:wellnessbridge/main.dart';
 // Ensure that main.dart exports a class named MyApp, or update the import/class name below if different.
 
 void main() {
