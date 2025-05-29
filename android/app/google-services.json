@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "261003038203",
+    "project_id": "wellnessbridge-f26a4",
+    "storage_bucket": "wellnessbridge-f26a4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:261003038203:android:2fca59ae76b18053084f5e",
+        "android_client_info": {
+          "package_name": "com.example.wellnessbridge"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVknSNULVDrolcZIjQe6T9SyD9yRZkoBM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

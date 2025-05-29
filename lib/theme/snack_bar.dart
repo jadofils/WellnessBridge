@@ -1,40 +1,113 @@
 import 'package:flutter/material.dart';
+import 'package:wellnessbridge/theme/theme.dart';
 
-void showCustomSnackBar(BuildContext context, String message, bool isSuccess) {
-  // Get the screen width
-  double screenWidth = MediaQuery.of(context).size.width;
+class CustomSnackBar {
+  static void show(
+    BuildContext context,
+    String message, {
+    bool isSuccess = true,
+    Duration duration = const Duration(seconds: 3),
+  }) {
+    final overlay = Overlay.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-  // Set the max width for the SnackBar to be 600px
-  double snackBarWidth = screenWidth > 600 ? 600 : screenWidth;
-
-  final snackBar = SnackBar(
-    content: Container(
-      width: snackBarWidth, // Set the width dynamically based on screen size
-      height: 35,  // Fixed height of 35px
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Text(
-              message,
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+    // Create overlay entry for top-right positioning
+    late OverlayEntry overlayEntry;
+    overlayEntry = OverlayEntry(
+      builder:
+          (context) => Positioned(
+            top: MediaQuery.of(context).padding.top + 16,
+            right: 16,
+            left:
+                MediaQuery.of(context).size.width > 600
+                    ? MediaQuery.of(context).size.width - 400
+                    : 16,
+            child: Material(
+              color: Colors.transparent,
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 300),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                    color:
+                        isSuccess
+                            ? (isDark
+                                ? AppTheme.nightPrimaryColor
+                                : Colors.green)
+                            : Colors.red,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 8,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        isSuccess ? Icons.check_circle : Icons.error,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          message,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                      GestureDetector(
+                        onTap: () => overlayEntry.remove(),
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.white.withOpacity(0.8),
+                          size: 18,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
-          IconButton(
-            icon: Icon(Icons.close, color: Colors.white),
-            onPressed: () {
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            },
-          ),
-        ],
-      ),
-    ),
-    backgroundColor: isSuccess ? Colors.green : Colors.red, // Green for success, red for failure
-    behavior: SnackBarBehavior.floating, // Floating style
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)), // Rounded edges
-    duration: Duration(seconds: 3), // Auto-dismiss after 3 seconds
-    margin: EdgeInsets.only(top: 16, right: 16), // Position at top-right corner
-  );
+    );
 
-  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    overlay.insert(overlayEntry);
+
+    // Auto-remove after duration
+    Future.delayed(duration, () {
+      if (overlayEntry.mounted) {
+        overlayEntry.remove();
+      }
+    });
+  }
+
+  static void showSuccess(BuildContext context, String message) {
+    show(context, message, isSuccess: true);
+  }
+
+  static void showError(BuildContext context, String message) {
+    show(context, message, isSuccess: false);
+  }
+}
+
+// Extension method to make it easier to show snack bars
+extension SnackBarExtension on BuildContext {
+  void showSuccessSnackBar(String message) {
+    CustomSnackBar.showSuccess(this, message);
+  }
+
+  void showErrorSnackBar(String message) {
+    CustomSnackBar.showError(this, message);
+  }
 }

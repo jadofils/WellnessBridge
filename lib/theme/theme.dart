@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // Common Colors
-  static const Color primaryColor = Color(0xFF6200EE); // Example color
-  static const Color secondaryColor = Color(0xFF2196F3);
-  static const Color backgroundColor = Color(0xFFF5F5F5);
+  // Brand Colors
+  static const Color rustOrange = Color(0xFFBB3E00); // #BB3E00
+  static const Color amber = Color(0xFFF7AD45); // #F7AD45
+  static const Color navy = Color(0xFF332D56); // #332D56
+  static const Color blue = Color(0xFF4E6688); // #4E6688
+
+  // Common Assignments
+  static const Color primaryColor = rustOrange;
+  static const Color secondaryColor = amber;
 
   // Night Mode Colors
-  static const Color nightBackgroundColor = Color(0xFF121212);
-  static const Color nightPrimaryColor = Color(0xFF6200EE);
+  static const Color nightBackgroundColor = navy;
+  static const Color nightPrimaryColor = blue;
 
   // Sun Mode Colors
-  static const Color sunBackgroundColor = Color(0xFFFFFFFF);
-  static const Color sunPrimaryColor = Color(0xFF2196F3);
+  static const Color sunBackgroundColor = Color(0xFFFFFFF5); // Light background
+  static const Color sunPrimaryColor = rustOrange;
 
   // Font Sizes
   static const double titleFontSize = 24.0;
   static const double subtitleFontSize = 18.0;
-  static const double bodyFontSize = 14.0;
-
-  // Button Colors
-  static const Color buttonColor = Color(0xFF6200EE);
-  static const Color buttonTextColor = Colors.white;
+  static const double bodyFontSize = 16.0;
+  static const double smallFontSize = 12.0;
+  static const double buttonFontSize = 16.0;
 
   // Text Styles
   static TextStyle titleTextStyle = TextStyle(
@@ -32,27 +35,40 @@ class AppTheme {
 
   static TextStyle subtitleTextStyle = TextStyle(
     fontSize: subtitleFontSize,
-    color: primaryColor,
+    color: navy,
   );
 
   static TextStyle bodyTextStyle = TextStyle(
     fontSize: bodyFontSize,
-    color: Colors.black,
+    color: navy,
   );
 
   // Light Theme
   static ThemeData lightTheme = ThemeData(
     primaryColor: primaryColor,
     colorScheme: ColorScheme.light(
-      background: backgroundColor, // Use `background` instead of `backgroundColor`
+      primary: rustOrange,
+      secondary: amber,
+      tertiary: blue,
+      surface: amber.withOpacity(0.3),
     ),
-    buttonTheme: ButtonThemeData(
-      buttonColor: buttonColor,
+    appBarTheme: AppBarTheme(
+      backgroundColor: rustOrange,
+      foregroundColor: Colors.white,
+    ),
+    buttonTheme: ButtonThemeData(buttonColor: rustOrange),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: rustOrange,
+      foregroundColor: Colors.white,
     ),
     textTheme: TextTheme(
-      titleLarge: titleTextStyle, // Use `titleLarge` instead of `headline6`
-      titleMedium: subtitleTextStyle, // Use `titleMedium` instead of `subtitle1`
-      bodyMedium: bodyTextStyle, // Use `bodyMedium` instead of `bodyText2`
+      titleLarge: titleTextStyle,
+      titleMedium: subtitleTextStyle,
+      bodyMedium: bodyTextStyle,
+    ),
+    cardTheme: CardTheme(
+      color: Colors.white,
+      shadowColor: blue.withOpacity(0.3),
     ),
   );
 
@@ -60,15 +76,30 @@ class AppTheme {
   static ThemeData darkTheme = ThemeData(
     primaryColor: nightPrimaryColor,
     colorScheme: ColorScheme.dark(
-      background: nightBackgroundColor, // Use `background` instead of `backgroundColor`
+      primary: nightPrimaryColor,
+      secondary: rustOrange,
+      tertiary: amber,
+      surface: navy.withOpacity(0.2),
     ),
-    buttonTheme: ButtonThemeData(
-      buttonColor: buttonColor,
+    appBarTheme: AppBarTheme(
+      backgroundColor: nightPrimaryColor,
+      foregroundColor: amber,
+    ),
+    buttonTheme: ButtonThemeData(buttonColor: nightPrimaryColor),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: rustOrange,
+      foregroundColor: Colors.white,
     ),
     textTheme: TextTheme(
-      titleLarge: titleTextStyle.copyWith(color: Colors.white), // Use `titleLarge`
-      titleMedium: subtitleTextStyle.copyWith(color: Colors.white), // Use `titleMedium`
-      bodyMedium: bodyTextStyle.copyWith(color: Colors.white), // Use `bodyMedium`
+      titleLarge: titleTextStyle.copyWith(color: amber),
+      titleMedium: subtitleTextStyle.copyWith(color: amber),
+      bodyMedium: bodyTextStyle.copyWith(color: Colors.white),
     ),
+    cardTheme: CardTheme(color: navy, shadowColor: blue.withOpacity(0.3)),
   );
+
+  static const Color lightInputFillColor = Color(
+    0xFFFFFFF5,
+  ); // Using sunBackgroundColor
+  static const Color darkInputFillColor = Color(0xFF332D56); // Using navy
 }
