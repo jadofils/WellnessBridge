@@ -48,7 +48,7 @@ class DatabaseHelper {
       print('IndexedDB initialized successfully for offline web storage');
     } catch (e) {
       print('Error initializing IndexedDB: $e');
-      throw e;
+      rethrow;
     }
   }
 

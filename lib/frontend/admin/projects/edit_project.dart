@@ -29,7 +29,7 @@ class _EditProjectState extends State<EditProject> {
   List<Map<String, dynamic>> _cadres = [];
   List<Map<String, dynamic>> _filteredCadres = [];
   List<Map<String, dynamic>> _healthWorkers = [];
-  Set<int> _selectedUserIds = {};
+  final Set<int> _selectedUserIds = {};
   bool _isLoading = false;
   Timer? _debounce;
 
@@ -324,7 +324,7 @@ class _EditProjectState extends State<EditProject> {
                                       return DropdownMenuItem<int>(
                                         value: cadId as int,
                                         child: Text(
-                                          '${cadId}. ${cadre['name'] ?? 'Unnamed Cadre'}',
+                                          '$cadId. ${cadre['name'] ?? 'Unnamed Cadre'}',
                                           style: TextStyle(
                                             color:
                                                 widget.isDarkMode

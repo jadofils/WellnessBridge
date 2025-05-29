@@ -9,7 +9,7 @@ import 'package:wellnessbridge/frontend/admin/children/view_child.dart';
 import 'package:wellnessbridge/frontend/admin/children/edit_children.dart';
 
 class ChildrenList extends StatefulWidget {
-  const ChildrenList({Key? key}) : super(key: key);
+  const ChildrenList({super.key});
 
   @override
   State<ChildrenList> createState() => _ChildrenListState();
@@ -114,7 +114,6 @@ class _ChildrenListState extends State<ChildrenList> {
         builder: (BuildContext context) {
           return Theme(
             data: Theme.of(context).copyWith(
-              dialogBackgroundColor: _isDarkMode ? AppTheme.navy : Colors.white,
               textTheme: TextTheme(
                 titleLarge: TextStyle(
                   color: _isDarkMode ? AppTheme.amber : AppTheme.navy,
@@ -125,7 +124,7 @@ class _ChildrenListState extends State<ChildrenList> {
                   color: _isDarkMode ? Colors.white70 : AppTheme.blue,
                   fontSize: AppTheme.bodyFontSize,
                 ),
-              ),
+              ), dialogTheme: DialogThemeData(backgroundColor: _isDarkMode ? AppTheme.navy : Colors.white),
             ),
             child: AlertDialog(
               shape: RoundedRectangleBorder(

@@ -5,8 +5,7 @@ class ViewProject extends StatelessWidget {
   final Map<String, dynamic> project;
   final bool isDarkMode;
 
-  const ViewProject({Key? key, required this.project, required this.isDarkMode})
-    : super(key: key);
+  const ViewProject({super.key, required this.project, required this.isDarkMode});
 
   @override
   Widget build(BuildContext context) {

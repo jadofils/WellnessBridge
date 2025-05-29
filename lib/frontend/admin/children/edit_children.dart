@@ -7,7 +7,7 @@ import 'package:wellnessbridge/backend_api/children/edit_children_api.dart';
 class EditChildren extends StatefulWidget {
   final Map<String, dynamic> childData;
 
-  const EditChildren({Key? key, required this.childData}) : super(key: key);
+  const EditChildren({super.key, required this.childData});
 
   @override
   State<EditChildren> createState() => _EditChildrenState();
@@ -88,16 +88,14 @@ class _EditChildrenState extends State<EditChildren> {
                   _isDarkMode
                       ? Colors.white
                       : AppTheme.navy, // Text color on surface
-            ),
-            dialogBackgroundColor:
-                _isDarkMode
-                    ? AppTheme.navy
-                    : Colors.white, // Background of the dialog
+            ), // Background of the dialog
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                 foregroundColor: AppTheme.rustOrange,
               ), // Color for "CANCEL" and "OK" buttons
-            ),
+            ), dialogTheme: DialogThemeData(backgroundColor: _isDarkMode
+                    ? AppTheme.navy
+                    : Colors.white),
           ),
           child: child!,
         );

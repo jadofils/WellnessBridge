@@ -185,7 +185,7 @@ class _SignUpPageState extends State<SignUpPage> {
             'Select CadID',
             style: AppTheme.subtitleTextStyle.copyWith(color: AppTheme.navy),
           ),
-          content: Container(
+          content: SizedBox(
             width: double.maxFinite,
             child: StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {

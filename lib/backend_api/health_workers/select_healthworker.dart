@@ -1,11 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:wellnessbridge/theme/theme.dart';
-import 'package:wellnessbridge/theme/snack_bar.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:wellnessbridge/backend_api/health_workers/health_workers_api.dart';
-import 'package:wellnessbridge/screens/health_workers/health_worker_profile_screen.dart';
 import 'package:wellnessbridge/backend_api/health_workers/health_worker_profile_screen.dart';
 import 'package:wellnessbridge/backend_api/health_workers/delete_healthworker.dart';
 import 'package:wellnessbridge/backend_api/health_workers/assign_health_cadre.dart';

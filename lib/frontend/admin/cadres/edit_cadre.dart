@@ -8,10 +8,10 @@ class EditCadre extends StatefulWidget {
   final bool isDarkMode;
 
   const EditCadre({
-    Key? key,
+    super.key,
     this.cadre, // No longer required, can be null for new cadres
     required this.isDarkMode,
-  }) : super(key: key);
+  });
 
   @override
   State<EditCadre> createState() => _EditCadreState();

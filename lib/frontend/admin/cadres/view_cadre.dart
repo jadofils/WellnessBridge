@@ -6,10 +6,10 @@ class ViewCadre extends StatelessWidget {
   final bool isDarkMode;
 
   const ViewCadre({
-    Key? key,
+    super.key,
     required this.cadre,
     required this.isDarkMode,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

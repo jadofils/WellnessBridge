@@ -7,8 +7,7 @@ import 'package:wellnessbridge/frontend/admin/birth_property/edit_birth_property
 class ViewBirthProperty extends StatefulWidget {
   final int birthPropertyId;
 
-  const ViewBirthProperty({Key? key, required this.birthPropertyId})
-      : super(key: key);
+  const ViewBirthProperty({super.key, required this.birthPropertyId});
 
   @override
   State<ViewBirthProperty> createState() => _ViewBirthPropertyState();

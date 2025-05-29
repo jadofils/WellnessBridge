@@ -7,7 +7,7 @@ import 'package:wellnessbridge/frontend/admin/children/edit_children.dart';
 class ViewChild extends StatefulWidget {
   final int childId;
 
-  const ViewChild({Key? key, required this.childId}) : super(key: key);
+  const ViewChild({super.key, required this.childId});
 
   @override
   State<ViewChild> createState() => _ViewChildState();

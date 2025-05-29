@@ -114,8 +114,9 @@ extension FormFieldValidators on String? {
 
   String? validatePhone() {
     if (this == null || this!.isEmpty) return "Phone number is required";
-    if (!ValidationUtils.isValidPhone(this!))
+    if (!ValidationUtils.isValidPhone(this!)) {
       return "Enter a valid phone number";
+    }
     return null;
   }
 

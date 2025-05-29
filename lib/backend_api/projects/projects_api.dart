@@ -74,6 +74,8 @@ class UmunyabuzimaUser {
 }
 
 class ProjectAssignmentScreen extends StatefulWidget {
+  const ProjectAssignmentScreen({super.key});
+
   @override
   _ProjectAssignmentScreenState createState() =>
       _ProjectAssignmentScreenState();

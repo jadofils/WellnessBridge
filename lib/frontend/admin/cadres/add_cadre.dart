@@ -5,7 +5,7 @@ import 'package:wellnessbridge/backend_api/cadres/cadres_api.dart';
 
 class AddCadre extends StatefulWidget {
   final bool isDarkMode;
-  const AddCadre({Key? key, required this.isDarkMode}) : super(key: key);
+  const AddCadre({super.key, required this.isDarkMode});
 
   @override
   _AddCadreState createState() => _AddCadreState();

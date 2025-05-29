@@ -9,12 +9,12 @@ class EditProfileScreen extends StatefulWidget {
   final VoidCallback onProfileUpdated;
 
   const EditProfileScreen({
-    Key? key,
+    super.key,
     required this.worker,
     required this.isDarkMode,
     this.isNewWorker = false,
     required this.onProfileUpdated,
-  }) : super(key: key);
+  });
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();

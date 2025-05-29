@@ -8,10 +8,10 @@ class EditBirthProperty extends StatefulWidget {
   final int? childId; // Optional child ID for by-child updates
 
   const EditBirthProperty({
-    Key? key,
+    super.key,
     required this.birthPropertyId,
     this.childId,
-  }) : super(key: key);
+  });
 
   @override
   State<EditBirthProperty> createState() => _EditBirthPropertyState();

@@ -9,7 +9,7 @@ import 'package:wellnessbridge/frontend/admin/birth_property/view_birth_property
 import 'package:wellnessbridge/frontend/admin/birth_property/edit_birth_property.dart';
 
 class BirthPropertyList extends StatefulWidget {
-  const BirthPropertyList({Key? key}) : super(key: key);
+  const BirthPropertyList({super.key});
 
   @override
   State<BirthPropertyList> createState() => _BirthPropertyListState();

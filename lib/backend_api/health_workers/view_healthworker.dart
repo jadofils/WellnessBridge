@@ -7,9 +7,8 @@ import 'package:wellnessbridge/backend_api/health_workers/assign_health_cadre.da
 // import 'package:wellnessbridge/backend_api/health_workers/edit_healthworker.dart';
 // import 'package:wellnessbridge/backend_api/health_workers/edit_profile.dart';
 import 'package:wellnessbridge/theme/theme.dart';
-import 'package:wellnessbridge/theme/snack_bar.dart'; // Ensure this import is correct for your custom snack bar
+// Ensure this import is correct for your custom snack bar
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:wellnessbridge/backend_api/health_workers/health_workers_api.dart';
 import 'package:wellnessbridge/screens/health_workers/health_worker_profile_screen.dart'; // Correct screen for editing profile
 
